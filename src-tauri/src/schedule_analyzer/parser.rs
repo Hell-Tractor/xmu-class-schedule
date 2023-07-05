@@ -1,6 +1,7 @@
 use std::{fs::File, io::Read};
 
 use scraper::ElementRef;
+use tauri::InvokeError;
 use thiserror::Error;
 
 use super::{class_schedule::ClassSchedule, class_week::ClassWeek, schedule_file::ScheduleFile};
@@ -17,6 +18,12 @@ pub enum ScheduleParseError {
     SerializeError(#[from] serde_json::Error),
     #[error("Error when parsing week day: {0}.")]
     WeekDayParseError(#[from] std::num::ParseIntError)
+}
+
+impl Into<InvokeError> for ScheduleParseError {
+    fn into(self) -> InvokeError {
+        InvokeError::from(self.to_string())
+    }
 }
 
 pub fn parse(html: &str, output_file_path: &str) -> Result<(), ScheduleParseError> {

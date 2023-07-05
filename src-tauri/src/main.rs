@@ -4,16 +4,10 @@
 mod schedule_analyzer;
 mod commands;
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 fn main() {
     // schedule_analyzer::parse("../temp/我的课表app.html", "../temp/我的课表app.json").unwrap();
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![commands::schedule::get_schedules, greet])
+        .invoke_handler(tauri::generate_handler![commands::schedule::get_schedules, commands::schedule::get_schedule_list, commands::schedule::parse_schedule])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

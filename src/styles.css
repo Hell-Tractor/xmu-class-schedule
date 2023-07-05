@@ -53,20 +53,6 @@ h1 {
   text-align: center;
 }
 
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
 button {
   cursor: pointer;
 }
@@ -106,4 +92,28 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
+}
+
+.no-divider-collapse,
+.no-divider-collapse .el-collapse-item__wrap,
+.no-divider-collapse .el-collapse-item__header {
+  border: none !important;
+}
+
+.vertical-align {
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+.no-border,
+.no-border .el-radio-button__inner,
+.no-border .el-radio-button:first-child {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.all-border-radius,
+.all-border-radius .el-radio-button__inner {
+  border-radius: 5px !important;
 }

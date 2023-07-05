@@ -90,3 +90,26 @@ pub fn get_schedules(name: &str, week: u8) -> Result<Vec<HashMap<String, TimeOrS
 
     Ok(result)
 }
+
+#[tauri::command]
+pub fn get_schedule_list() -> Vec<String> {
+    let mut result: Vec<String> = Vec::new();
+    let Ok(paths) = std::fs::read_dir("../data/schedules") else {
+        return result;
+    };
+    for path in paths {
+        let path = path.unwrap().path();
+        let Some(file_name) = path.file_name() else {
+            continue;
+        };
+        // remove extension
+        let Some((name, extension)) = file_name.to_str().unwrap().split_once(".") else {
+            continue;
+        };
+        if extension != "json" {
+            continue;
+        }
+        result.push(name.to_string());
+    }
+    result
+}
