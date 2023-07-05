@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "xmu-class-schedule",
-    "version": "0.0.0"
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -41,10 +41,9 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "xmu-class-schedule",
+        "title": "厦门大学课程表",
         "width": 800,
-        "height": 600,
-        "alwaysOnTop": true
+        "height": 600
       }
     ]
   }

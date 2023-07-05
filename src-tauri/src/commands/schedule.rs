@@ -83,10 +83,10 @@ pub fn get_schedules(name: &str, week: u8) -> Result<Vec<HashMap<String, TimeOrS
     }
 
     // write result to ../temp/debug.json
-    let file_path = format!("../temp/debug.json");
-    let file = std::fs::File::create(file_path)?;
-    let writer = std::io::BufWriter::new(file);
-    serde_json::to_writer(writer, &result)?;
+    // let file_path = format!("../temp/debug.json");
+    // let file = std::fs::File::create(file_path)?;
+    // let writer = std::io::BufWriter::new(file);
+    // serde_json::to_writer(writer, &result)?;
 
     Ok(result)
 }

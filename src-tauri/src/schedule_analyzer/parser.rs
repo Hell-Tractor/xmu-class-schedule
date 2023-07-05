@@ -56,6 +56,9 @@ pub fn parse(html: &str, output_file_path: &str) -> Result<(), ScheduleParseErro
     }
 
     // write to file
+    // create folder if not exist
+    let output_dir = std::path::Path::new(output_file_path).parent().unwrap();
+    std::fs::create_dir_all(output_dir)?;
     let output_file = File::create(output_file_path)?;
     serde_json::to_writer(output_file, &result)?;
 

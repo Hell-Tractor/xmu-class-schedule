@@ -80,6 +80,7 @@ export default {
         <el-radio-group v-model="scheduleName" class="vertical-align no-border all-border-radius">
           <el-radio-button v-for="s in scheduleList" :label="s" >{{ s }}</el-radio-button>
         </el-radio-group>
+        <br>
         <el-button class="no-border" @click="showImportScheduleDialog=true">导入课程表</el-button>
       </el-collapse-item>
     </el-collapse>
