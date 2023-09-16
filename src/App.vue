@@ -1,7 +1,8 @@
 <script>
 import Schedule from "./components/Schedule.vue";
 import ImportScheduleDialog from "./components/dialogs/ImportScheduleDialog.vue";
-import { Menu, ArrowLeft, ArrowRight, Refresh } from '@element-plus/icons-vue'
+import Settings from "./components/Settings.vue";
+import { Menu, ArrowLeft, ArrowRight, Refresh, Setting } from '@element-plus/icons-vue'
 import { invoke } from "@tauri-apps/api/tauri";
 
 export default {
@@ -11,9 +12,11 @@ export default {
       today: {},
       startOfSemester: new Date(2023, 1, 13),
       showMenu: false,
-      scheduleName: "2022-2023 夏季学期",
+      scheduleName: "",
+      defaultScheduleName: "",
       scheduleList: [],
-      showImportScheduleDialog: false
+      showImportScheduleDialog: false,
+      showSettings: false
     }
   },
   components: {
@@ -22,8 +25,10 @@ export default {
     ArrowLeft,
     ArrowRight,
     ImportScheduleDialog,
-    Refresh
-},
+    Refresh,
+    Setting,
+    Settings
+  },
   methods: {
     getToday() {
       var today = new Date();
@@ -34,12 +39,28 @@ export default {
     async updateScheduleList() {
       console.log("update schedule list");
       this.scheduleList = await invoke("get_schedule_list");
+    },
+    updateSettings(settings) {
+      this.startOfSemester = new Date(settings["startOfSemester"]);
+      this.defaultScheduleName = settings["defaultScheduleName"];
+    },
+    async loadSettings() {
+      var settings = await invoke("get_or_default_settings");
+      this.updateSettings(settings);
+      this.scheduleName = this.defaultScheduleName;
+    }
+  },
+  watch: {
+    startOfSemester() {
+      this.today = this.getToday();
+      this.weekId = this.today.week;
     }
   },
   mounted() {
     this.today = this.getToday();
     this.weekId = this.today.week;
     this.updateScheduleList();
+    this.loadSettings();
   }
 }
 </script>
@@ -74,19 +95,31 @@ export default {
     <el-collapse class="no-divider-collapse">
       <el-collapse-item>
         <template #title>
-          切换课程表
+          <div style="font-size: 1em !important;">
+            切换课程表
+          </div>
           <el-button class="no-border" @click.stop="updateScheduleList"><el-icon><Refresh /></el-icon></el-button>
         </template>
         <el-radio-group v-model="scheduleName" class="vertical-align no-border all-border-radius">
           <el-radio-button v-for="s in scheduleList" :label="s" >{{ s }}</el-radio-button>
         </el-radio-group>
         <br>
-        <el-button class="no-border" @click="showImportScheduleDialog=true">导入课程表</el-button>
+        <el-button class="no-border" @click="showImportScheduleDialog = true">导入课程表</el-button>
       </el-collapse-item>
+      <el-row>
+        <el-col :span="24">
+          <el-button class="no-border settings" @click="showSettings = true"><el-icon class="el-icon--left"><Setting /></el-icon><el-text>设置</el-text></el-button>
+        </el-col>
+      </el-row>
     </el-collapse>
   </el-drawer>
 
-  <ImportScheduleDialog v-model="showImportScheduleDialog" @schedule-imported="updateScheduleList()"/>
+  <ImportScheduleDialog v-model="showImportScheduleDialog" @schedule-imported="updateScheduleList"/>
+  <Settings
+    v-model:show-settings="showSettings"
+    :schedule-list="scheduleList"
+    @update="updateSettings"
+  />
 </template>
 
 <style scoped>
@@ -104,5 +137,18 @@ export default {
 .flex-align-right {
   display: flex;
   justify-content: flex-end;
+}
+
+.el-collapse-item__header {
+  font-size: 1em !important;
+  color: green;
+}
+
+.settings {
+  font-size: 1em;
+  /* color: black; */
+  width: 100%;
+  justify-content: start;
+  padding-left: 0;
 }
 </style>

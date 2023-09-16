@@ -3806,7 +3806,7 @@ dependencies = [
 
 [[package]]
 name = "xmu-class-schedule"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "scraper",
  "serde",

@@ -42,6 +42,8 @@ export default {
     },
     methods: {
         async getClasses() {
+            if (this.scheduleName == "无课程表")
+                return;
             this.isLoading = true;
             try {
                 const classes = await invoke("get_schedules", { name: this.scheduleName, week: this.weekId });
